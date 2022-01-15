@@ -46,15 +46,15 @@ function requireAdmin(req, res, next) {
 
 function authUser(req, res, next) {
   try {
+    //FIXES BUG #2
+    if (!req.query._token) throw new ExpressError("Unauthorized", 401);
     const token = req.body._token || req.query._token;
     if (token) {
-      let payload = jwt.decode(token);
+      let payload = jwt.verify(token, SECRET_KEY);
       req.curr_username = payload.username;
       req.curr_admin = payload.admin;
-      return next();
     }
-    //FIXES BUG #5
-    throw new ExpressError("unauthorized",401)
+    return next();
   } catch (err) {
     err.status = 401;
     return next(err);

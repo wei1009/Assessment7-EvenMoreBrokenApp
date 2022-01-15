@@ -17,7 +17,6 @@ const newUserSchema = require('../schemas/userNew.json')
 
 router.post('/register', async function(req, res, next) {
   try {
-    //FIXES BUG #2
     const validator = jsonschema.validate(req.body, newUserSchema)
     if (!validator.valid){
       const err = validator.errors.map(e => e.stack)
@@ -30,7 +29,7 @@ router.post('/register', async function(req, res, next) {
   } catch (err) {
     return next(err);
   }
-}); // end
+}); 
 
 /** Log in user; return token.
  *
@@ -44,8 +43,9 @@ router.post('/register', async function(req, res, next) {
 
 router.post('/login', async function(req, res, next) {
   try {
+    //FIXES BUG #3
     const { username, password } = req.body;
-    let user = User.authenticate(username, password);
+    let user = await User.authenticate(username, password);
     const token = createTokenForUser(username, user.admin);
     return res.json({ token });
   } catch (err) {
