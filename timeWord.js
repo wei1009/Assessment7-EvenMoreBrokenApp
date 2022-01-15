@@ -1,9 +1,9 @@
-const timeWord = function (time) {
-    const timeArr = time.split(":");
-    const hour = parseInt(timeArr[0]);
-    const min = parseInt(timeArr[1]);
+const timeWord = time => {
+    const [hour, min] = time.split(":");
+    hour = parseInt(hour);
+    min = parseInt(hour);
     const result = [];
-    const word = {
+    const WORD = {
         single: {
             0: "",
             1: "one",
@@ -35,36 +35,36 @@ const timeWord = function (time) {
     }
 
     if(hour === 0 && min === 0){
-        return "midnight"
-    }else if(hour === 12 && min === 0){
-        return "noon"
-    }else if(hour === 0){
-        result.push("twelve") 
-    }else if(hour <= 12){
-        result.push(word.single[hour])
-    }else if (hour > 12 && hour<25) {
+        return "midnight";
+    } else if(hour === 12 && min === 0){
+        return "noon";
+    } else if(hour === 0){
+        result.push("twelve");
+    } else if(hour <= 12){
+        result.push(WORD.single[hour])
+    } else if (hour > 12 && hour < 25) {
         let newHour = hour - 12;
-        result.push(word.single[newHour])
-    }else {
-        return "Enter a valid time"
+        result.push(WORD.single[newHour])
+    } else {
+        return "Enter a valid time";
     }
 
     if(min === 0 ){
-        result.push("o’clock")
-    }else if(min < 10){
-        result.push("oh"+ " " +word.single[min])
-    }else if(min >= 10 && min <= 19){
-        result.push(word.single[min])
-    }else if(min > 19 && min <60){
+        result.push("o’clock");
+    } else if(min < 10){
+        result.push("oh"+ " " +WORD.single[min]);
+    } else if(min >= 10 && min <= 19){
+        result.push(WORD.single[min]);
+    } else if(min > 19 && min <60){
         let newMin = min.toString().split("")
         if(newMin[1] == 0){
-            result.push(word.multiple[newMin[0]])
-        }else{
+            result.push(WORD.multiple[newMin[0]]);
+        } else{
 
-            result.push(word.multiple[newMin[0]]+" "+word.single[newMin[1]]);
+            result.push(WORD.multiple[newMin[0]]+" "+WORD.single[newMin[1]]);
         }
-    }else{
-        return "Enter a valid time"
+    } else{
+        return "Enter a valid time";
     }
 
     hour >= 12 ? result.push("pm") : result.push("am");
